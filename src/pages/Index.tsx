@@ -9,6 +9,8 @@ import Contact from '../components/Contact';
 import Footer from '../components/Footer';
 import PromotionalBlock from '../components/PromotionalBlock';
 import Blog from '../components/Blog';
+import ChatWidget from "../components/ChatWidget";
+
 
 const Index = () => {
   const [activeTab, setActiveTab] = useState('home');
@@ -69,6 +71,8 @@ const Index = () => {
         {renderContent()}
       </main>
       <Footer onNavigate={handleNavigate} />
+      <ChatWidget />
+
     </div>
   );
 };

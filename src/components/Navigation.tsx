@@ -27,12 +27,12 @@ const Navigation = ({ activeTab, setActiveTab }: NavigationProps) => {
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center">
             <img 
-              src="/lovable-uploads/143c1950-fec3-4534-b183-b8d0f8059e86.png" 
+              src="/lovable-uploads/ACUCOGN - Copy.png" 
               alt="AcuCogn Brain Logo" 
               className="h-12 w-auto mr-3"
             />
             <img 
-              src="/lovable-uploads/47f9b594-512e-457d-8f7a-a90fc60103d3.png" 
+              src="/lovable-uploads/aaa.png" 
               alt="AcuCogn AI Solutions" 
               className="h-8 w-auto"
             />

@@ -20,7 +20,7 @@ const Footer = ({ onNavigate }: FooterProps) => {
           <div className="md:col-span-2">
             <div className="flex items-center mb-4">
               <img 
-                src="/lovable-uploads/aaea7331-77b1-42dc-9daa-4d0d32f6dc3f.png" 
+                src="/lovable-uploads/bb.png" 
                 alt="AcuCogn Logo" 
                 className="h-12 w-auto mr-3"
               />
