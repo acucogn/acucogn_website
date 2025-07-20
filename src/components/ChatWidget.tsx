@@ -49,7 +49,7 @@ const ChatWidget = () => {
     setIsTyping(true);
 
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:5000";
+      const apiUrl = import.meta.env.VITE_API_URL || "https://website-chatbot-drfwc6creycpctat.centralus-01.azurewebsites.net/";
       
       const response = await fetch(`${apiUrl}/api/chat`, {
         method: "POST",
