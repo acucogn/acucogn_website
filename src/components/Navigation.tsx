@@ -27,7 +27,7 @@ const Navigation = ({ activeTab, setActiveTab }: NavigationProps) => {
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center">
             <img 
-              src="/lovable-uploads/ACUCOGN - Copy.png" 
+              src="/lovable-uploads/favicon.png" 
               alt="AcuCogn Brain Logo" 
               className="h-12 w-auto mr-3"
             />
