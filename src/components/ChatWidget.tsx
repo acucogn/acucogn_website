@@ -1,4 +1,3 @@
-// src/components/ChatWidget.tsx
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -32,10 +31,13 @@ const ChatWidget = () => {
   ];
   
   useEffect(() => {
-    chatContainerRef.current?.scrollTo({
-      top: chatContainerRef.current.scrollHeight,
-      behavior: 'smooth'
-    });
+    // Only scroll to bottom if there are messages, to avoid scrolling past the welcome view
+    if (messages.length > 0) {
+      chatContainerRef.current?.scrollTo({
+        top: chatContainerRef.current.scrollHeight,
+        behavior: 'smooth'
+      });
+    }
   }, [messages, isTyping]);
 
   const sendMessage = async (text: string) => {
@@ -49,7 +51,7 @@ const ChatWidget = () => {
     setIsTyping(true);
 
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || "https://website-chatbot-drfwc6creycpctat.centralus-01.azurewebsites.net/";
+      const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:5000";
       
       const response = await fetch(`${apiUrl}/api/chat`, {
         method: "POST",
@@ -132,90 +134,85 @@ const ChatWidget = () => {
                   </button>
                 </div>
 
-                <div ref={chatContainerRef} className="flex-1 space-y-4 overflow-y-auto p-6">
-                  {messages.map((message, index) => (
-                    <div key={index} className={`flex items-end gap-2 ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                      {message.role === 'bot' && (
-                        <img 
-                          src="/lovable-uploads/systembot.png"
-                          alt="Bot Avatar"
-                          className="h-8 w-8 flex-shrink-0 rounded-full object-cover" 
-                        />
-                      )}
-                      
-                      <div className={`max-w-[80%] rounded-lg px-4 py-2 text-sm ${
-                        message.role === 'user'
-                          ? 'bg-blue-600 text-white'
-                          : 'bg-purple-600 text-white'
-                      }`}>
-                        {message.content}
+                {/* --- MODIFIED AREA: Welcome section is now always visible at the top of the scrollable container --- */}
+                <div ref={chatContainerRef} className="flex-1 overflow-y-auto p-6">
+                  {/* Welcome Section */}
+                  <div className="mb-8 flex flex-col items-center text-center">
+                    <div className="w-full max-w-sm rounded-lg border border-zinc-200 bg-white p-6 shadow-sm">
+                      <h2 className="text-xl font-semibold text-zinc-800 mb-4">
+                        Welcome to ACUCOGN
+                      </h2>
+                      <img
+                        src="/lovable-uploads/systembot.png"
+                        alt="Chatbot"
+                        className="mx-auto mb-4  h-50 w-50 rounded-full object-cover" // Adjusted size for better layout
+                      />
+                      <p className="text-sm text-zinc-600 mb-6">
+                        How can I assist you today?
+                      </p>
+                      <div className="space-y-3">
+                        {quickActions.map((label) => (
+                          <motion.button
+                            key={label}
+                            whileTap={{ scale: 0.98 }}
+                            className="w-full rounded-md border border-indigo-500 bg-white px-4 py-3 
+                                       text-sm font-semibold text-indigo-600
+                                       transition-all duration-200
+                                       hover:bg-indigo-600 hover:text-white"
+                            onClick={() => sendMessage(label)}
+                          >
+                            {label}
+                          </motion.button>
+                        ))}
                       </div>
+                    </div>
+                  </div>
 
-                      {message.role === 'user' && (
-                        <div className="h-8 w-8 flex-shrink-0 rounded-full bg-gray-400 flex items-center justify-center">
-                          <svg className="h-5 w-5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                            <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
-                          </svg>
+                  {/* Chat Messages */}
+                  <div className="space-y-4">
+                    {messages.map((message, index) => (
+                      <div key={index} className={`flex items-end gap-2 ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                        {message.role === 'bot' && (
+                          <img 
+                            src="/lovable-uploads/systembot.png"
+                            alt="Bot Avatar"
+                            className="h-8 w-8 flex-shrink-0 rounded-full object-cover" 
+                          />
+                        )}
+                        
+                        <div className={`max-w-[80%] rounded-lg px-4 py-2 text-sm ${
+                          message.role === 'user'
+                            ? 'bg-blue-600 text-white'
+                            : 'bg-purple-600 text-white'
+                        }`}>
+                          {message.content}
                         </div>
-                      )}
-                    </div>
-                  ))}
-                  
-                  {messages.length === 0 && (
-                    <div className="flex flex-col items-center text-center">
-                      {/* Rectangle container for welcome section */}
-                      <div className="w-full max-w-sm rounded-lg border border-zinc-200 bg-white p-6 shadow-sm">
-                        {/* Welcome message at the top */}
-                        <h2 className="text-xl font-semibold text-zinc-800 mb-4">
-                          Welcome to ACUCOGN
-                        </h2>
-                        
-                        {/* Bot image in center */}
-                        <img
-                          src="/lovable-uploads/systembot.png"
-                          alt="Chatbot"
-                          className="mx-auto mb-4 h-50 w-50 rounded-full object-cover"
-                        />
-                        
-                        {/* "How can I assist you today?" below image */}
-                        <p className="text-sm text-zinc-600 mb-6">
-                          How can I assist you today?
-                        </p>
-                        
-                        {/* Quick action buttons */}
-                        <div className="space-y-3">
-                          {quickActions.map((label) => (
-                            <motion.button
-                              key={label}
-                              whileTap={{ scale: 0.98 }}
-                              className="w-full rounded-md border border-indigo-500 bg-white px-4 py-3 
-                                         text-sm font-semibold text-indigo-600
-                                         transition-all duration-200
-                                         hover:bg-indigo-600 hover:text-white"
-                              onClick={() => sendMessage(label)}
-                            >
-                              {label}
-                            </motion.button>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  )}
 
-                  {isTyping && (
-                    <div className="flex items-center gap-2 text-sm text-zinc-500">
-                       <img 
-                          src="/lovable-uploads/systembot.png"
-                          alt="Bot Avatar"
-                          className="h-8 w-8 flex-shrink-0 rounded-full object-cover" 
-                        />
-                       <div className="flex items-center gap-1.5 pl-1">
-                        <div className="h-2 w-2 animate-bounce rounded-full bg-zinc-400" style={{ animationDelay: '0ms' }}></div>
-                        <div className="h-2 w-2 animate-bounce rounded-full bg-zinc-400" style={{ animationDelay: '150ms' }}></div>
-                        <div className="h-2 w-2 animate-bounce rounded-full bg-zinc-400" style={{ animationDelay: '300ms' }}></div>
+                        {message.role === 'user' && (
+                          <div className="h-8 w-8 flex-shrink-0 rounded-full bg-gray-400 flex items-center justify-center">
+                            <svg className="h-5 w-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                              <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
+                            </svg>
+                          </div>
+                        )}
                       </div>
-                    </div>
-                  )}
+                    ))}
+                    
+                    {isTyping && (
+                      <div className="flex items-center gap-2 text-sm text-zinc-500">
+                         <img 
+                            src="/lovable-uploads/systembot.png"
+                            alt="Bot Avatar"
+                            className="h-8 w-8 flex-shrink-0 rounded-full object-cover" 
+                          />
+                         <div className="flex items-center gap-1.5 pl-1">
+                          <div className="h-2 w-2 animate-bounce rounded-full bg-zinc-400" style={{ animationDelay: '0ms' }}></div>
+                          <div className="h-2 w-2 animate-bounce rounded-full bg-zinc-400" style={{ animationDelay: '150ms' }}></div>
+                          <div className="h-2 w-2 animate-bounce rounded-full bg-zinc-400" style={{ animationDelay: '300ms' }}></div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
 
                 <div className="border-t border-zinc-200 p-4">
