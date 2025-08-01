@@ -51,7 +51,7 @@ const ChatWidget = () => {
     setIsTyping(true);
 
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || "https://website-chatbot-drfwc6creycpctat.centralus-01.azurewebsites.net/";
+      const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:5000";
       
       const response = await fetch(`${apiUrl}/api/chat`, {
         method: "POST",
@@ -182,8 +182,8 @@ const ChatWidget = () => {
                         
                         <div className={`max-w-[80%] rounded-lg px-4 py-2 text-sm ${
                           message.role === 'user'
-                            ? 'bg-blue-600 text-white'
-                            : 'bg-purple-600 text-white'
+                            ? 'bg-blue-100 text-blue-800'
+                            : 'bg-violet-100	text-violet-800'
                         }`}>
                           {message.content}
                         </div>

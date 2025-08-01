@@ -7,7 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Index from "./pages/Index";
 import BlogPost from "./pages/BlogPost";
 import NotFound from "./pages/NotFound";
-
+import BlogAdmin from "./components/BlogAdmin";
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -19,6 +19,7 @@ const App = () => (
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/blog/:id" element={<BlogPost />} />
+          <Route path="/blogadmin" element={<BlogAdmin />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

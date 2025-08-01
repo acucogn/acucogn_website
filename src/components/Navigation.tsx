@@ -1,24 +1,19 @@
-
-import React from 'react';
+import React, { useState } from 'react';
 import { Menu, X } from 'lucide-react';
-import { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 
-interface NavigationProps {
-  activeTab: string;
-  setActiveTab: (tab: string) => void;
-}
+const navItems = [
+  { id: 'home', label: 'Home', path: '/' },
+  { id: 'services', label: 'Services', path: '/services' },
+  { id: 'portfolio', label: 'Portfolio', path: '/portfolio' },
+  { id: 'blog', label: 'Blog', path: '/blog' },
+  { id: 'faq', label: 'FAQs', path: '/faq' },
+  { id: 'contact', label: 'Contact', path: '/contact' },
+];
 
-const Navigation = ({ activeTab, setActiveTab }: NavigationProps) => {
+const Navigation = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-  const navItems = [
-    { id: 'home', label: 'Home' },
-    { id: 'services', label: 'Services' },
-    { id: 'portfolio', label: 'Portfolio' },
-    { id: 'blog', label: 'Blog' },
-    { id: 'faq', label: 'FAQs' },
-    { id: 'contact', label: 'Contact' },
-  ];
+  const location = useLocation();
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-lg border-b border-gray-200 shadow-sm">
@@ -42,17 +37,17 @@ const Navigation = ({ activeTab, setActiveTab }: NavigationProps) => {
           <div className="hidden md:block">
             <div className="ml-10 flex items-baseline space-x-4">
               {navItems.map((item) => (
-                <button
+                <Link
                   key={item.id}
-                  onClick={() => setActiveTab(item.id)}
+                  to={item.path}
                   className={`px-3 py-2 rounded-md text-sm font-medium transition-all duration-300 ${
-                    activeTab === item.id
+                    location.pathname === item.path
                       ? 'bg-blue-600 text-white'
                       : 'text-gray-700 hover:text-blue-600 hover:bg-gray-100'
                   }`}
                 >
                   {item.label}
-                </button>
+                </Link>
               ))}
             </div>
           </div>
@@ -74,20 +69,18 @@ const Navigation = ({ activeTab, setActiveTab }: NavigationProps) => {
         <div className="md:hidden bg-white/95 backdrop-blur-lg border-b border-gray-200">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             {navItems.map((item) => (
-              <button
+              <Link
                 key={item.id}
-                onClick={() => {
-                  setActiveTab(item.id);
-                  setIsMobileMenuOpen(false);
-                }}
+                to={item.path}
+                onClick={() => setIsMobileMenuOpen(false)}
                 className={`block w-full text-left px-3 py-2 rounded-md text-base font-medium transition-all duration-300 ${
-                  activeTab === item.id
+                  location.pathname === item.path
                     ? 'bg-blue-600 text-white'
                     : 'text-gray-700 hover:text-blue-600 hover:bg-gray-100'
                 }`}
               >
                 {item.label}
-              </button>
+              </Link>
             ))}
           </div>
         </div>

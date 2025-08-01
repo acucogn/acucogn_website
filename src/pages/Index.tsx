@@ -1,5 +1,5 @@
-
-import React, { useState } from 'react';
+import React from 'react';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import Navigation from '../components/Navigation';
 import Hero from '../components/Hero';
 import Services from '../components/Services';
@@ -11,70 +11,42 @@ import PromotionalBlock from '../components/PromotionalBlock';
 import Blog from '../components/Blog';
 import ChatWidget from "../components/ChatWidget";
 
-
-const Index = () => {
-  const [activeTab, setActiveTab] = useState('home');
-
-  const handleContactClick = () => {
-    setActiveTab('contact');
-  };
-
-  const handleNavigate = (tab: string) => {
-    setActiveTab(tab);
-  };
-
-  const renderContent = () => {
-    switch (activeTab) {
-      case 'home':
-        return (
-          <>
-            <Hero onNavigate={handleNavigate} />
-            <PromotionalBlock currentTab={activeTab} onContactClick={handleContactClick} />
-          </>
-        );
-      case 'services':
-        return (
-          <>
-            <Services />
-            <PromotionalBlock currentTab={activeTab} onContactClick={handleContactClick} />
-          </>
-        );
-      case 'portfolio':
-        return (
-          <>
-            <Portfolio />
-          </>
-        );
-      case 'blog':
-        return (
-          <>
-            <Blog />
-          </>
-        );
-      case 'faq':
-        return (
-          <>
-            <FAQ />
-          </>
-        );
-      case 'contact':
-        return <Contact />;
-      default:
-        return <Hero onNavigate={handleNavigate} />;
-    }
-  };
-
+const Home = () => {
+  const navigate = useNavigate();
   return (
-    <div className="min-h-screen bg-white">
-      <Navigation activeTab={activeTab} setActiveTab={setActiveTab} />
-      <main className="relative">
-        {renderContent()}
-      </main>
-      <Footer onNavigate={handleNavigate} />
-      <ChatWidget />
-
-    </div>
+    <>
+      <Hero onNavigate={(tab) => navigate(tab)} />
+      <PromotionalBlock currentTab="home" onContactClick={() => navigate('/contact')} />
+    </>
   );
 };
+
+const ServicesPage = () => {
+  const navigate = useNavigate();
+  return (
+    <>
+      <Services />
+      <PromotionalBlock currentTab="services" onContactClick={() => navigate('/contact')} />
+    </>
+  );
+};
+
+const Index = () => (
+  <div className="min-h-screen bg-white">
+    <Navigation />
+    <main className="relative">
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/services" element={<ServicesPage />} />
+        <Route path="/portfolio" element={<Portfolio />} />
+        <Route path="/blog" element={<Blog />} />
+        <Route path="/faq" element={<FAQ />} />
+        <Route path="/contact" element={<Contact />} />
+      </Routes>
+    </main>
+    <Footer />
+    <ChatWidget />
+  </div>
+);
 
 export default Index;
